@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Moneyzz</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrappper">
+        <a class="brand-logo center">Moneyzz</a>
+      </div>
+    </nav>
+    <div class="left-align" class="container">
+      <form>
+        <div>
+          <label>Total Salary</label>
+          <input type="text" id="item" name="test" autofocus readonly />
+        </div>
+        <div>
+          <label>Total Income</label>
+          <input type="text" id="item1" name="test1" autofocus readonly />
+        </div>
+        <div class="left-align">
+          <label>Total Mortgage</label>
+          <input type="text" id="item2" name="test2" autofocus readonly />
+        </div>
+        <div>
+          <label>Total Bills</label>
+          <input type="text" id="item3" name="test3" autofocus readonly />
+        </div>
+        <!-- <button class="btn waves-effect waves-light" type="submit">
+          add item
+        </button> -->
+      </form>
+    </div>
+    <ul></ul>
+
+    <script>
+      const electron = require('electron')
+      const { ipcRenderer } = electron
+      const ul = document.querySelector('ul')
+
+      //auto-populate the info
+      var mysql = require('mysql')
+
+      var connection = mysql.createConnection({
+        host: '127.0.0.1',
+        user: 'JonasWalker',
+        password: 'jonas1999',
+        database: 'Moneyz',
+      })
+      connection.connect()
+
+      connection.query(
+        'SELECT salary FROM moneyz.accountinfo;',
+        function (error, results, fields) {
+          if (error) throw error
+          console.log(results)
+          document.getElementById('item').value = results[0].salary
+        }
+      )
+
+      // Add item
+      ipcRenderer.on('item:add', function (e, item) {
+        console.log(item)
+        var temp = (document.getElementById('item').value = item)
+        connection.query(
+          'UPDATE moneyz.accountinfo SET salary = ' + item + ';',
+          function (error, results, fields) {
+            if (error) throw error
+          }
+        )
+      })
+      console.log('test123')
+      // Clear Items
+      //ipcRenderer.on('item:clear', function () {
+      //  ul.innerHTML = ''
+      //  ul.className = ''
+      //})
+
+      // Remove Item
+      //ul.addEventListener('dblclick', removeItem)
+
+      /* function removeItem(e) {
+        e.target.remove()
+        if (ul.children.length == 0) {
+          ul.className = ''
+        }
+      } */
+
+      connection.end()
+    </script>
+  </body>
+</html>
