@@ -1,7 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Moneyzz</title>
+    <!--Import Google Icon Font-->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!--Import materialize.css-->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="css/materialize.min.css"
+      media="screen,projection"
+    />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title onload="whenOpen()">Moneyzz</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
@@ -13,30 +29,58 @@
         <a class="brand-logo center">Moneyzz</a>
       </div>
     </nav>
-    <div style="width: 20%; float: left" class="left-align" class="container">
-      <form>
-        <div>
-          <label>Total Salary</label>
-          <input
-            value="0"
-            type="text"
-            id="item"
-            name="test"
-            autofocus
-            readonly
-          />
+    <div
+      class="row"
+      onload="whenOpen()"
+      style="width: 20%; float: left"
+      class="left-align"
+    >
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input
+              placeholder="Entry Salary"
+              id="totalSalary"
+              type="text"
+              onblur="upDateDatabase()"
+            />
+            <label class="active" for="totalSalary">Total Salary</label>
+          </div>
         </div>
-        <div>
-          <label>Total Income</label>
-          <input type="text" id="item1" name="test1" autofocus readonly />
+        <div class="row">
+          <div class="input-field col s6">
+            <input
+              placeholder="Entry Total Mortgages"
+              type="text"
+              id="totalMortgage"
+              name="totalMortgage"
+            />
+            <label class="active" for="totalMortgage">Total Mortgage</label>
+          </div>
         </div>
-        <div>
-          <label>Total Mortgage</label>
-          <input type="text" id="item2" name="test2" autofocus readonly />
+        <div class="row">
+          <div class="input-field col s6">
+            <input
+              placeholder="Entry Total Car Loans"
+              type="text"
+              id="totalCarLoan"
+              name="totalCarLoan"
+              onblur="upDateDatabase()"
+            />
+            <label class="active" for="totalCarLoan">Total Car Loan</label>
+          </div>
         </div>
-        <div>
-          <label>Total Bills</label>
-          <input type="text" id="item3" name="test3" autofocus readonly />
+        <div class="row">
+          <div class="input-field col s6">
+            <input
+              placeholder="Entry Total Bills"
+              type="text"
+              id="totalBills"
+              name="totalBills"
+              onblur="upDateDatabase()"
+            />
+            <label class="active" for="totalBills">Total Bills</label>
+          </div>
         </div>
         <!-- <button class="btn waves-effect waves-light" type="submit">
           add item
@@ -57,7 +101,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-      // SQL stuff
+      /* // SQL stuff
       const electron = require('electron')
       const { ipcRenderer } = electron
       const ul = document.querySelector('ul')
@@ -80,44 +124,25 @@
           console.log(results)
           document.getElementById('item').value = results[0].salary
         }
-      )
+      ) */
 
       var temp = 0
 
       // Add item
-      ipcRenderer.on('item:add', function (e, item) {
-        document.getElementById('item').value = item
-        temp = document.getElementById('item').value
-        connection.query(
-          'UPDATE moneyz.accountinfo SET salary = ' + item + ';',
-          function (error, results, fields) {
-            if (error) throw error
-          }
-        )
-      })
-      console.log('test123')
+      //ipcRenderer.on('item:add', function (e, item) {
+      //document.getElementById('item').value = item
+      //temp = document.getElementById('item').value
+      //connection.query(
+      //'UPDATE moneyz.accountinfo SET salary = ' + item + ';',
+      //function (error, results, fields) {
+      //  if (error) throw error
+      //}
+      //)
+      //})
+      // console.log('test123')
       section1 = 120
       section2 = 120
       section3 = 120
-      console.log(document.getElementById('item').value)
-      // Clear Items
-      //ipcRenderer.on('item:clear', function () {
-      //  ul.innerHTML = ''
-      //  ul.className = ''
-      //})
-
-      // Remove Item
-      //ul.addEventListener('dblclick', removeItem)
-
-      /* function removeItem(e) {
-        e.target.remove()
-        if (ul.children.length == 0) {
-          ul.className = ''
-        }
-      } */
-
-      /* console.log('right here')
-      console.log(temp.value) */
 
       // === include 'setup' then 'config' above ===
 
@@ -149,103 +174,103 @@
               bottom: 1500,
             },
           },
-          /*  plugins: {
-            legend: {
-              position: 'right',
-              align: 'center',
-            },
-          }, */
         },
       }
 
-      /* let chart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: {
-          layout: {
-            padding: 20,
-          },
-        },
-      }) */
-
-      /*  const actions = [
-        {
-          name: 'Position: right',
-          handler(chart) {
-            chart.options.plugins.legend.position = 'right'
-            chart.update()
-          },
-        },
-      ] */
-
       var myChart = new Chart(document.getElementById('myChart'), config)
 
-      connection.end()
+      //connection.end()
     </script>
-    <!--   <br style="clear: both" /> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Fills everything onLoad
+      function whenOpen() {
+        // SQL stuff
+        const electron = require('electron')
+        const { ipcRenderer } = electron
+        const ul = document.querySelector('ul')
 
-    <!-- <script>
-      // === include 'setup' then 'config' above ===
+        //auto-populate the info
+        var mysql = require('mysql')
 
-      const data = {
-        labels: ['Mortgage', 'Bills', 'Loans'],
-        datasets: [
-          {
-            label: 'My Fiances',
-            data: [120, 120, 120],
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
-              'rgb(255, 205, 86)',
-            ],
-            hoverOffset: 4,
-          },
-        ],
+        var connection = mysql.createConnection({
+          host: '127.0.0.1',
+          user: 'JonasWalker',
+          password: 'jonas1999',
+          database: 'Moneyz',
+        })
+
+        connection.connect()
+
+        connection.query(
+          'SELECT * FROM moneyz.accountinfo;',
+          function (error, results, fields) {
+            if (error) throw error
+            console.log(results)
+            document.getElementById('totalSalary').value = results[0].salary
+            document.getElementById('totalMortgage').value =
+              results[0].totalMortgages
+            document.getElementById('totalCarLoan').value =
+              results[0].totalCarLoans
+            document.getElementById('totalBills').value = results[0].totalBills
+            //document.getElementById('item').value = results[0].salary
+          }
+        )
+        connection.end()
       }
+    </script>
 
-      const config = {
-        type: 'pie',
-        data: data,
-        options: {
-          layout: {
-            padding: {
-              left: 1000,
-              right: 500,
-              top: 0,
-              bottom: 1500,
-            },
-          },
-          /*  plugins: {
-            legend: {
-              position: 'right',
-              align: 'center',
-            },
-          }, */
-        },
+    <script>
+      function upDateDatabase() {
+        // SQL stuff
+        const electron = require('electron')
+        const { ipcRenderer } = electron
+        const ul = document.querySelector('ul')
+
+        //auto-populate the info
+        var mysql = require('mysql')
+
+        var connection = mysql.createConnection({
+          host: '127.0.0.1',
+          user: 'JonasWalker',
+          password: 'jonas1999',
+          database: 'Moneyz',
+        })
+
+        connection.connect()
+
+        var item1 = document.getElementById('totalSalary').value
+        var item2 = document.getElementById('totalMortgage').value
+        var item3 = document.getElementById('totalCarLoan').value
+        var item4 = document.getElementById('totalBills').value
+
+        connection.query(
+          'UPDATE accountinfo SET salary =' +
+            item1 +
+            ', totalMortgages = ' +
+            item2 +
+            ', totalBills = ' +
+            item3 +
+            ', totalCarLoans = ' +
+            item4 +
+            ';',
+          function (error, results, fields) {
+            if (error) throw error
+            console.log(results)
+            document.getElementById('totalSalary').value = results[0].salary
+            document.getElementById('totalMortgage').value =
+              results[0].totalMortgages
+            document.getElementById('totalCarLoan').value =
+              results[0].totalCarLoans
+            document.getElementById('totalBills').value = results[0].totalBills
+            //document.getElementById('item').value = results[0].salary
+          }
+        )
       }
+    </script>
 
-      /* let chart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: {
-          layout: {
-            padding: 20,
-          },
-        },
-      }) */
-
-      /*  const actions = [
-        {
-          name: 'Position: right',
-          handler(chart) {
-            chart.options.plugins.legend.position = 'right'
-            chart.update()
-          },
-        },
-      ] */
-
-      var myChart = new Chart(document.getElementById('myChart'), config)
-    </script> -->
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="js/materialize.min.js"></script>
   </body>
 </html>
+<!--"UPDATE accountinfo SET salary =" + item + ", totalMortgages = " + item + ", totalBills = " + item + ", totalCarLoans = " + item + ";" -->

@@ -37,8 +37,8 @@ var addIncome
 app.on('ready', function () {
   // Create new window
   mainWindow = new BrowserWindow({
-    width: 1080,
-    height: 720,
+    width: 1920,
+    height: 1080,
 
     webPreferences: {
       nodeIntegration: true,
