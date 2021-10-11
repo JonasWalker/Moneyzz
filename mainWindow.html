@@ -13,17 +13,24 @@
         <a class="brand-logo center">Moneyzz</a>
       </div>
     </nav>
-    <div class="left-align" class="container">
+    <div style="width: 20%; float: left" class="left-align" class="container">
       <form>
         <div>
           <label>Total Salary</label>
-          <input type="text" id="item" name="test" autofocus readonly />
+          <input
+            value="0"
+            type="text"
+            id="item"
+            name="test"
+            autofocus
+            readonly
+          />
         </div>
         <div>
           <label>Total Income</label>
           <input type="text" id="item1" name="test1" autofocus readonly />
         </div>
-        <div class="left-align">
+        <div>
           <label>Total Mortgage</label>
           <input type="text" id="item2" name="test2" autofocus readonly />
         </div>
@@ -37,8 +44,20 @@
       </form>
     </div>
     <ul></ul>
+    <!-- canvas for piechart -->
+    <div>
+      <canvas
+        style="width: 70%; float: right; margin-top: -15%"
+        class="left-align"
+        id="myChart"
+      ></canvas>
+    </div>
+    <!--   <br style="clear: both" /> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+      // SQL stuff
       const electron = require('electron')
       const { ipcRenderer } = electron
       const ul = document.querySelector('ul')
@@ -63,10 +82,12 @@
         }
       )
 
+      var temp = 0
+
       // Add item
       ipcRenderer.on('item:add', function (e, item) {
-        console.log(item)
-        var temp = (document.getElementById('item').value = item)
+        document.getElementById('item').value = item
+        temp = document.getElementById('item').value
         connection.query(
           'UPDATE moneyz.accountinfo SET salary = ' + item + ';',
           function (error, results, fields) {
@@ -75,6 +96,10 @@
         )
       })
       console.log('test123')
+      section1 = 120
+      section2 = 120
+      section3 = 120
+      console.log(document.getElementById('item').value)
       // Clear Items
       //ipcRenderer.on('item:clear', function () {
       //  ul.innerHTML = ''
@@ -91,7 +116,136 @@
         }
       } */
 
+      /* console.log('right here')
+      console.log(temp.value) */
+
+      // === include 'setup' then 'config' above ===
+
+      const data = {
+        labels: ['Mortgage', 'Bills', 'Loans'],
+        datasets: [
+          {
+            label: 'My Fiances',
+            data: [section1, section2, section3],
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)',
+            ],
+            hoverOffset: 4,
+          },
+        ],
+      }
+
+      const config = {
+        type: 'pie',
+        data: data,
+        options: {
+          layout: {
+            padding: {
+              left: 1000,
+              right: 500,
+              top: 0,
+              bottom: 1500,
+            },
+          },
+          /*  plugins: {
+            legend: {
+              position: 'right',
+              align: 'center',
+            },
+          }, */
+        },
+      }
+
+      /* let chart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+          layout: {
+            padding: 20,
+          },
+        },
+      }) */
+
+      /*  const actions = [
+        {
+          name: 'Position: right',
+          handler(chart) {
+            chart.options.plugins.legend.position = 'right'
+            chart.update()
+          },
+        },
+      ] */
+
+      var myChart = new Chart(document.getElementById('myChart'), config)
+
       connection.end()
     </script>
+    <!--   <br style="clear: both" /> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- <script>
+      // === include 'setup' then 'config' above ===
+
+      const data = {
+        labels: ['Mortgage', 'Bills', 'Loans'],
+        datasets: [
+          {
+            label: 'My Fiances',
+            data: [120, 120, 120],
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)',
+            ],
+            hoverOffset: 4,
+          },
+        ],
+      }
+
+      const config = {
+        type: 'pie',
+        data: data,
+        options: {
+          layout: {
+            padding: {
+              left: 1000,
+              right: 500,
+              top: 0,
+              bottom: 1500,
+            },
+          },
+          /*  plugins: {
+            legend: {
+              position: 'right',
+              align: 'center',
+            },
+          }, */
+        },
+      }
+
+      /* let chart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+          layout: {
+            padding: 20,
+          },
+        },
+      }) */
+
+      /*  const actions = [
+        {
+          name: 'Position: right',
+          handler(chart) {
+            chart.options.plugins.legend.position = 'right'
+            chart.update()
+          },
+        },
+      ] */
+
+      var myChart = new Chart(document.getElementById('myChart'), config)
+    </script> -->
   </body>
 </html>

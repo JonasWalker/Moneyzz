@@ -8,7 +8,7 @@
   </head>
   <body>
     <div>
-      <canvas id="myChart"></canvas>
+      <canvas class="left-align" id="myChart"></canvas>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -34,7 +34,43 @@
       const config = {
         type: 'pie',
         data: data,
+        options: {
+          layout: {
+            padding: {
+              left: 1000,
+              right: 500,
+              top: 100,
+              bottome: 500,
+            },
+          },
+          /*  plugins: {
+            legend: {
+              position: 'right',
+              align: 'center',
+            },
+          }, */
+        },
       }
+
+      /* let chart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+          layout: {
+            padding: 20,
+          },
+        },
+      }) */
+
+      /*  const actions = [
+        {
+          name: 'Position: right',
+          handler(chart) {
+            chart.options.plugins.legend.position = 'right'
+            chart.update()
+          },
+        },
+      ] */
 
       var myChart = new Chart(document.getElementById('myChart'), config)
     </script>

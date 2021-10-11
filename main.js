@@ -3,6 +3,10 @@ const url = require('url')
 const path = require('path')
 
 var mysql = require('mysql')
+// for hot reload
+try {
+  require('electron-reloader')(module)
+} catch {}
 
 var connection = mysql.createConnection({
   host: '127.0.0.1',
@@ -44,7 +48,7 @@ app.on('ready', function () {
 
   mainWindow.loadURL(
     url.format({
-      pathname: path.join(__dirname, 'doughnutPie.html'),
+      pathname: path.join(__dirname, 'mainWindow.html'),
       protocol: 'file',
       slashes: true,
       // this is passing this === file://dirname/mainWindow.html into load url
@@ -93,6 +97,7 @@ function createAddWindow(_xwindow, _title) {
 
 // Catch item:add
 ipcMain.on('item:add', function (e, item) {
+  console.log(item)
   mainWindow.webContents.send('item:add', item)
   addWindow.close()
 })
