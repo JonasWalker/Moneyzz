@@ -44,7 +44,7 @@ app.on('ready', function () {
 
   mainWindow.loadURL(
     url.format({
-      pathname: path.join(__dirname, 'mainWindow.html'),
+      pathname: path.join(__dirname, 'doughnutPie.html'),
       protocol: 'file',
       slashes: true,
       // this is passing this === file://dirname/mainWindow.html into load url

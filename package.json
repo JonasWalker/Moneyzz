@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/JonasWalker/Moneyzz#readme",
   "dependencies": {
+    "chart.js": "^3.5.1",
     "electron": "^15.1.2",
+    "electron-chartjs": "^1.0.0",
     "mysql": "^2.18.1"
   }
 }
