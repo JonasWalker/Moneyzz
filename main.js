@@ -44,7 +44,7 @@ app.on('ready', function () {
 
   mainWindow.loadURL(
     url.format({
-      pathname: path.join(dirname, 'mainWindow.html'),
+      pathname: path.join(__dirname, 'mainWindow.html'),
       protocol: 'file',
       slashes: true,
       // this is passing this === file://dirname/mainWindow.html into load url
@@ -64,7 +64,7 @@ app.on('ready', function () {
 // Handle create add window
 function createAddWindow(_xwindow, _title) {
   // Create new window
-  _xwindow = _xwindow + '.hteml'
+  _xwindow = _xwindow + '.html'
   addWindow = new BrowserWindow({
     width: 300,
     height: 200,
@@ -105,7 +105,7 @@ const mainMenuTemplate = [
       {
         label: 'Add Income',
         click() {
-          createAddWindow()
+          createAddWindow('addIncome', 'Add a New Income')
         },
       },
       {
