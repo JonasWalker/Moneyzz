@@ -17,7 +17,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title onload="whenOpen()">Moneyzz</title>
+    <title>Moneyzz</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
@@ -29,17 +29,12 @@
         <a class="brand-logo center">Moneyzz</a>
       </div>
     </nav>
-    <div
-      class="row"
-      onload="whenOpen()"
-      style="width: 20%; float: left"
-      class="left-align"
-    >
+    <div class="row" style="width: 20%; float: left" class="left-align">
       <form class="col s12">
         <div class="row">
           <div class="input-field col s6">
             <input
-              placeholder="Entry Salary"
+              placeholder="Enter Salary"
               id="totalSalary"
               type="text"
               onblur="upDateDatabase()"
@@ -50,7 +45,7 @@
         <div class="row">
           <div class="input-field col s6">
             <input
-              placeholder="Entry Total Mortgages"
+              placeholder="Enter Total Mortgages"
               type="text"
               id="totalMortgage"
               name="totalMortgage"
@@ -61,7 +56,7 @@
         <div class="row">
           <div class="input-field col s6">
             <input
-              placeholder="Entry Total Car Loans"
+              placeholder="Enter Total Car Loans"
               type="text"
               id="totalCarLoan"
               name="totalCarLoan"
@@ -73,13 +68,65 @@
         <div class="row">
           <div class="input-field col s6">
             <input
-              placeholder="Entry Total Bills"
+              placeholder="Enter Total Bills"
               type="text"
               id="totalBills"
               name="totalBills"
               onblur="upDateDatabase()"
             />
             <label class="active" for="totalBills">Total Bills</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input
+              placeholder="Enter Monthly Income"
+              type="text"
+              id="monthlyIncome"
+              name="monthlyIncome"
+              onblur="upDateDatabase()"
+            />
+            <label class="active" for="monthlyIncome">Monthly Income</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s8">
+            <input
+              placeholder="Enter Monthly Car Payment"
+              type="text"
+              id="monthlyCarPay"
+              name="monthlyCarPay"
+              onblur="upDateDatabase()"
+            />
+            <label class="active" for="monthlyCarPay"
+              >Monthly Car Payment</label
+            >
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s10">
+            <input
+              placeholder="Enter Monthly Mortgage Payment"
+              type="text"
+              id="monthlyMortgagePay"
+              name="monthlyMortgagePay"
+              onblur="upDateDatabase()"
+            />
+            <label class="active" for="monthlyMortgagePay"
+              >Monthly Mortgage Payment</label
+            >
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input
+              placeholder="Enter Total Bills"
+              type="text"
+              id="monthlyBills"
+              name="monthlyBills"
+              onblur="upDateDatabase()"
+            />
+            <label class="active" for="monthlyBills">Monthly Bills</label>
           </div>
         </div>
         <!-- <button class="btn waves-effect waves-light" type="submit">
@@ -91,7 +138,7 @@
     <!-- canvas for piechart -->
     <div>
       <canvas
-        style="width: 70%; float: right; margin-top: -15%"
+        style="width: 70%; float: right; margin-top: -30%"
         class="left-align"
         id="myChart"
       ></canvas>
@@ -184,7 +231,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       // Fills everything onLoad
-      function whenOpen() {
+      window.onload = function whenOpen() {
         // SQL stuff
         const electron = require('electron')
         const { ipcRenderer } = electron
@@ -192,6 +239,8 @@
 
         //auto-populate the info
         var mysql = require('mysql')
+
+        console.log('test')
 
         var connection = mysql.createConnection({
           host: '127.0.0.1',
@@ -245,15 +294,15 @@
         var item4 = document.getElementById('totalBills').value
 
         connection.query(
-          'UPDATE accountinfo SET salary =' +
+          'UPDATE accountinfo SET salary ="' +
             item1 +
-            ', totalMortgages = ' +
+            '", totalMortgages = "' +
             item2 +
-            ', totalBills = ' +
+            '", totalCarLoans = "' +
             item3 +
-            ', totalCarLoans = ' +
+            '", totalBills = "' +
             item4 +
-            ';',
+            '";',
           function (error, results, fields) {
             if (error) throw error
             console.log(results)

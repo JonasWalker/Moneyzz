@@ -21,7 +21,7 @@ connection.query(
   'SELECT salary FROM moneyz.accountinfo',
   function (error, results, fields) {
     if (error) throw error
-    console.log(results)
+    // console.log(results)
   }
 )
 
@@ -97,7 +97,7 @@ function createAddWindow(_xwindow, _title) {
 
 // Catch item:add
 ipcMain.on('item:add', function (e, item) {
-  console.log(item)
+  //console.log(item)
   mainWindow.webContents.send('item:add', item)
   addWindow.close()
 })
