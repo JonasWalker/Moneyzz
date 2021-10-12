@@ -148,7 +148,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-      /* // SQL stuff
+      // SQL stuff
       const electron = require('electron')
       const { ipcRenderer } = electron
       const ul = document.querySelector('ul')
@@ -163,18 +163,58 @@
         database: 'Moneyz',
       })
       connection.connect()
+      var monthlyIncome
+      var carPayment
+      var mortgagePayment
+      var bills
+      var leftOver
 
       connection.query(
-        'SELECT salary FROM moneyz.accountinfo;',
+        'SELECT * FROM moneyz.accountinfo;',
         function (error, results, fields) {
           if (error) throw error
-          console.log(results)
-          document.getElementById('item').value = results[0].salary
+
+          monthlyIncome = Number(results[0].monthlyIncome)
+          mortgagePayment = Number(results[0].monthlyMortgagePayment)
+          carPayment = Number(results[0].monthlyCarPayment)
+          bills = Number(results[0].monthlyBills)
+          leftOver = monthlyIncome - (mortgagePayment + carPayment + bills)
+
+          const data = {
+            labels: ['Mortgage', 'Car Loan', 'Bills', 'Left Over'],
+            datasets: [
+              {
+                label: 'My Fiances',
+                data: [mortgagePayment, carPayment, bills, leftOver],
+                backgroundColor: [
+                  'rgb(255, 99, 132)', //pink
+                  'rgb(54, 162, 235)', //blue
+                  'rgb(255, 205, 86)', //yellow
+                  'rgb(50, 168, 82)', //green
+                ],
+                hoverOffset: 4,
+              },
+            ],
+          }
+
+          const config = {
+            type: 'pie',
+            data: data,
+            options: {
+              layout: {
+                padding: {
+                  left: 1000,
+                  right: 500,
+                  top: 0,
+                  bottom: 1500,
+                },
+              },
+            },
+          }
+
+          var myChart = new Chart(document.getElementById('myChart'), config)
         }
-      ) */
-
-      var temp = 0
-
+      )
       // Add item
       //ipcRenderer.on('item:add', function (e, item) {
       //document.getElementById('item').value = item
@@ -187,12 +227,9 @@
       //)
       //})
       // console.log('test123')
-      carPayment = 0
-      //mortgagePayment = monthlyMortgagePayment
-      // bills = monthlyBills
-      //leftOver = monthlyIncome - (carPayment + mortgagePayment + bills)
+      /*  leftOver = monthlyIncome - (carPayment + mortgagePayment + bills)
       console.log(carPayment)
-      //console.log(mortgagePayment)
+      console.log(mortgagePayment)
       //console.log(bills)
       //console.log(leftOver)
 
@@ -230,9 +267,9 @@
         },
       }
 
-      var myChart = new Chart(document.getElementById('myChart'), config)
+      var myChart = new Chart(document.getElementById('myChart'), config) */
 
-      //connection.end()
+      connection.end()
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -261,7 +298,6 @@
           'SELECT * FROM moneyz.accountinfo;',
           function (error, results, fields) {
             if (error) throw error
-            console.log(results)
             document.getElementById('totalSalary').value = results[0].salary
             document.getElementById('totalMortgage').value =
               results[0].totalMortgages
