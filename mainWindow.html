@@ -187,22 +187,28 @@
       //)
       //})
       // console.log('test123')
-      section1 = 120
-      section2 = 120
-      section3 = 120
+      carPayment = 0
+      //mortgagePayment = monthlyMortgagePayment
+      // bills = monthlyBills
+      //leftOver = monthlyIncome - (carPayment + mortgagePayment + bills)
+      console.log(carPayment)
+      //console.log(mortgagePayment)
+      //console.log(bills)
+      //console.log(leftOver)
 
       // === include 'setup' then 'config' above ===
 
       const data = {
-        labels: ['Mortgage', 'Bills', 'Loans'],
+        labels: ['Mortgage', 'Bills', 'Loans', 'Left Over'],
         datasets: [
           {
             label: 'My Fiances',
-            data: [section1, section2, section3],
+            data: [120, 120, 100, 20],
             backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
-              'rgb(255, 205, 86)',
+              'rgb(255, 99, 132)', //pinik
+              'rgb(54, 162, 235)', //blue
+              'rgb(255, 205, 86)', //yellow
+              'rgb(50, 168, 82)', //green
             ],
             hoverOffset: 4,
           },
@@ -262,7 +268,15 @@
             document.getElementById('totalCarLoan').value =
               results[0].totalCarLoans
             document.getElementById('totalBills').value = results[0].totalBills
-            //document.getElementById('item').value = results[0].salary
+            document.getElementById('monthlyIncome').value =
+              results[0].monthlyIncome
+            document.getElementById('monthlyCarPay').value =
+              results[0].monthlyCarPayment
+            document.getElementById('monthlyMortgagePay').value =
+              results[0].monthlyMortgagePayment
+            document.getElementById('monthlyBills').value =
+              results[0].monthlyBills
+            //document.getElementById('monthlyIncome').value = results[0].monthlyIncome
           }
         )
         connection.end()
@@ -292,16 +306,28 @@
         var item2 = document.getElementById('totalMortgage').value
         var item3 = document.getElementById('totalCarLoan').value
         var item4 = document.getElementById('totalBills').value
+        var item5 = document.getElementById('monthlyIncome').value
+        var item6 = document.getElementById('monthlyCarPay').value
+        var item7 = document.getElementById('monthlyMortgagePay').value
+        var item8 = document.getElementById('monthlyBills').value
 
         connection.query(
           'UPDATE accountinfo SET salary ="' +
             item1 +
+            '", monthlyIncome = "' +
+            item5 +
             '", totalMortgages = "' +
             item2 +
             '", totalCarLoans = "' +
             item3 +
             '", totalBills = "' +
             item4 +
+            '", monthlyCarPayment = "' +
+            item6 +
+            '", monthlyMortgagePayment = "' +
+            item7 +
+            '", monthlyBills = "' +
+            item8 +
             '";',
           function (error, results, fields) {
             if (error) throw error
@@ -323,3 +349,7 @@
   </body>
 </html>
 <!--"UPDATE accountinfo SET salary =" + item + ", totalMortgages = " + item + ", totalBills = " + item + ", totalCarLoans = " + item + ";" -->
+
+<!--'UPDATE accountinfo SET salary ="' + item1 + '", totalMortgages = "' + item2 + '", totalCarLoans = "' + item3 + '", totalBills = "' + item4 + '";', -->
+
+<!--'UPDATE accountinfo SET salary ="' + item1 + '", monthlyIncome = "' + item5 + '", totalMortgages = "' + item2 + '", totalCarLoans = "' + item3 + '", totalBills = "' + item4 + '", monthlyCarPay = "' + item6 + '", monthlyMortgagePay = "' + item7 + '", monthlyBills = "' + item8 '";' -->
