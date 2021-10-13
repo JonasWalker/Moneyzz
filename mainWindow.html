@@ -156,6 +156,18 @@
       //auto-populate the info
       var mysql = require('mysql')
 
+      // pie chart
+      window.myChart = null
+
+      var item1
+      var item2
+      var item3
+      var item4
+      var item5
+      var item6
+      var item7
+      var item8
+
       var connection = mysql.createConnection({
         host: '127.0.0.1',
         user: 'JonasWalker',
@@ -212,67 +224,12 @@
             },
           }
 
-          var myChart = new Chart(document.getElementById('myChart'), config)
+          myChart = new Chart(document.getElementById('myChart'), config)
         }
       )
-      // Add item
-      //ipcRenderer.on('item:add', function (e, item) {
-      //document.getElementById('item').value = item
-      //temp = document.getElementById('item').value
-      //connection.query(
-      //'UPDATE moneyz.accountinfo SET salary = ' + item + ';',
-      //function (error, results, fields) {
-      //  if (error) throw error
-      //}
-      //)
-      //})
-      // console.log('test123')
-      /*  leftOver = monthlyIncome - (carPayment + mortgagePayment + bills)
-      console.log(carPayment)
-      console.log(mortgagePayment)
-      //console.log(bills)
-      //console.log(leftOver)
-
-      // === include 'setup' then 'config' above ===
-
-      const data = {
-        labels: ['Mortgage', 'Bills', 'Loans', 'Left Over'],
-        datasets: [
-          {
-            label: 'My Fiances',
-            data: [120, 120, 100, 20],
-            backgroundColor: [
-              'rgb(255, 99, 132)', //pinik
-              'rgb(54, 162, 235)', //blue
-              'rgb(255, 205, 86)', //yellow
-              'rgb(50, 168, 82)', //green
-            ],
-            hoverOffset: 4,
-          },
-        ],
-      }
-
-      const config = {
-        type: 'pie',
-        data: data,
-        options: {
-          layout: {
-            padding: {
-              left: 1000,
-              right: 500,
-              top: 0,
-              bottom: 1500,
-            },
-          },
-        },
-      }
-
-      var myChart = new Chart(document.getElementById('myChart'), config) */
 
       connection.end()
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
+
       // Fills everything onLoad
       window.onload = function whenOpen() {
         // SQL stuff
@@ -317,9 +274,11 @@
         )
         connection.end()
       }
-    </script>
 
-    <script>
+      function testFunction() {
+        console.log('this is item1:' + item1)
+      }
+
       function upDateDatabase() {
         // SQL stuff
         const electron = require('electron')
@@ -338,14 +297,14 @@
 
         connection.connect()
 
-        var item1 = document.getElementById('totalSalary').value
-        var item2 = document.getElementById('totalMortgage').value
-        var item3 = document.getElementById('totalCarLoan').value
-        var item4 = document.getElementById('totalBills').value
-        var item5 = document.getElementById('monthlyIncome').value
-        var item6 = document.getElementById('monthlyCarPay').value
-        var item7 = document.getElementById('monthlyMortgagePay').value
-        var item8 = document.getElementById('monthlyBills').value
+        item1 = document.getElementById('totalSalary').value
+        item2 = document.getElementById('totalMortgage').value
+        item3 = document.getElementById('totalCarLoan').value
+        item4 = document.getElementById('totalBills').value
+        item5 = document.getElementById('monthlyIncome').value
+        item6 = document.getElementById('monthlyCarPay').value
+        item7 = document.getElementById('monthlyMortgagePay').value
+        item8 = document.getElementById('monthlyBills').value
 
         connection.query(
           'UPDATE accountinfo SET salary ="' +
@@ -377,11 +336,34 @@
             //document.getElementById('item').value = results[0].salary
           }
         )
+        updateConfigAsNewObject(myChart)
+      }
+
+      function updateConfigAsNewObject(chart) {
+        chart.options = {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Chart.js',
+            },
+          },
+          scales: {
+            x: {
+              display: true,
+            },
+            y: {
+              display: true,
+            },
+          },
+        }
+        chart.update()
       }
     </script>
 
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </body>
 </html>
 <!--"UPDATE accountinfo SET salary =" + item + ", totalMortgages = " + item + ", totalBills = " + item + ", totalCarLoans = " + item + ";" -->
