@@ -22,6 +22,7 @@
     "electron-chartjs": "^1.0.0",
     "electron-reloader": "^1.2.1",
     "materialize-css": "^1.0.0-rc.2",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "numeral": "^2.0.6"
   }
 }
