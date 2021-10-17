@@ -29,10 +29,10 @@
         <a class="brand-logo center">Moneyzz</a>
       </div>
     </nav>
-    <div class="row" style="width: 20%; float: left" class="left-align">
-      <form class="col s12">
+    <div class="row">
+      <form class="col s24">
         <div class="row">
-          <div class="input-field col s6">
+          <div class="input-field col s3">
             <input
               placeholder="Enter Salary"
               id="totalSalary"
@@ -41,9 +41,7 @@
             />
             <label class="active" for="totalSalary">Total Salary</label>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s6">
+          <div class="input-field col s3">
             <input
               placeholder="Enter Total Mortgages"
               type="text"
@@ -53,9 +51,7 @@
             />
             <label class="active" for="totalMortgage">Total Mortgage</label>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s6">
+          <div class="input-field col s3">
             <input
               placeholder="Enter Total Car Loans"
               type="text"
@@ -65,9 +61,7 @@
             />
             <label class="active" for="totalCarLoan">Total Car Loan</label>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s6">
+          <div class="input-field col s3">
             <input
               placeholder="Enter Total Bills"
               type="text"
@@ -78,68 +72,70 @@
             <label class="active" for="totalBills">Total Bills</label>
           </div>
         </div>
-        <div class="row">
-          <div class="input-field col s6">
-            <input
-              placeholder="Enter Monthly Income"
-              type="text"
-              id="monthlyIncome"
-              name="monthlyIncome"
-              onblur="upDateDatabase()"
-            />
-            <label class="active" for="monthlyIncome">Monthly Income</label>
+        <div class="row" style="width: 30%; float: left; margin-left: 0.5%">
+          <div class="row">
+            <div class="input-field col s6">
+              <input
+                placeholder="Enter Monthly Income"
+                type="text"
+                id="monthlyIncome"
+                name="monthlyIncome"
+                onblur="upDateDatabase()"
+              />
+              <label class="active" for="monthlyIncome">Monthly Income</label>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s8">
-            <input
-              placeholder="Enter Monthly Car Payment"
-              type="text"
-              id="monthlyCarPay"
-              name="monthlyCarPay"
-              onblur="upDateDatabase()"
-            />
-            <label class="active" for="monthlyCarPay"
-              >Monthly Car Payment</label
-            >
+          <div class="row">
+            <div class="input-field col s8">
+              <input
+                placeholder="Enter Monthly Car Payment"
+                type="text"
+                id="monthlyCarPay"
+                name="monthlyCarPay"
+                onblur="upDateDatabase()"
+              />
+              <label class="active" for="monthlyCarPay"
+                >Monthly Car Payment</label
+              >
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s10">
-            <input
-              placeholder="Enter Monthly Mortgage Payment"
-              type="text"
-              id="monthlyMortgagePay"
-              name="monthlyMortgagePay"
-              onblur="upDateDatabase()"
-            />
-            <label class="active" for="monthlyMortgagePay"
-              >Monthly Mortgage Payment</label
-            >
+          <div class="row">
+            <div class="input-field col s10">
+              <input
+                placeholder="Enter Monthly Mortgage Payment"
+                type="text"
+                id="monthlyMortgagePay"
+                name="monthlyMortgagePay"
+                onblur="upDateDatabase()"
+              />
+              <label class="active" for="monthlyMortgagePay"
+                >Monthly Mortgage Payment</label
+              >
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s6">
-            <input
-              placeholder="Enter Total Bills"
-              type="text"
-              id="monthlyBills"
-              name="monthlyBills"
-              onblur="upDateDatabase()"
-            />
-            <label class="active" for="monthlyBills">Monthly Bills</label>
+          <div class="row">
+            <div class="input-field col s6">
+              <input
+                placeholder="Enter Total Bills"
+                type="text"
+                id="monthlyBills"
+                name="monthlyBills"
+                onblur="upDateDatabase()"
+              />
+              <label class="active" for="monthlyBills">Monthly Bills</label>
+            </div>
           </div>
-        </div>
-        <!-- <button class="btn waves-effect waves-light" type="submit">
+          <!-- <button class="btn waves-effect waves-light" type="submit">
           add item
         </button> -->
+        </div>
       </form>
     </div>
     <ul></ul>
     <!-- canvas for piechart -->
     <div>
       <canvas
-        style="width: 70%; float: right; margin-top: -30%"
+        style="width: 70%; float: right; margin-top: -20%"
         class="left-align"
         id="myChart"
       ></canvas>
