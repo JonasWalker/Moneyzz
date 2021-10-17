@@ -147,12 +147,14 @@
     <!--   <br style="clear: both" /> -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="numeral.min.js"></script>
 
     <script>
       // SQL stuff
       const electron = require('electron')
       const { ipcRenderer } = electron
       const ul = document.querySelector('ul')
+      var numeral = require('numeral')
 
       //auto-populate the info
       var mysql = require('mysql')
@@ -225,7 +227,6 @@
               },
             },
           }
-
           myChart = new Chart(document.getElementById('myChart'), config)
         }
       )
@@ -234,50 +235,60 @@
 
       // Get numbers to look like currency
       function fixNumbers() {
-        let fieldsToFix = ['totalSalary', 'totalMortgage', 'totalCarLoan']
-        let temp2 = fieldsToFix[0].slice(3)
-        console.log(temp2)
-
+        let fieldsToFix = [
+          'totalSalary',
+          'totalMortgage',
+          'totalCarLoan',
+          'totalBills',
+          'monthlyIncome',
+          'monthlyCarPay',
+          'monthlyMortgagePay',
+          'monthlyBills',
+        ]
         for (let x = 0; x < fieldsToFix.length; x++) {
           let temp = Number(document.getElementById(fieldsToFix[x]).value)
-          //temp = '$' + temp.toFixed(2)
-          console.log('This is temp ' + (x + 1) + ': ' + temp)
-          console.log('This should be 5th character in temp: ' + temp[5])
+          temp = numeral(temp).format('$ 0,0[.]00')
+          document.getElementById(fieldsToFix[x]).value = temp
+
+          console.log(
+            'This is fixed ' +
+              fieldsToFix[x] +
+              ': ' +
+              document.getElementById(fieldsToFix[x]).value
+          )
         }
-        /* for (let x = 0; x < fieldsToFix.length; x++) {
-          let temp = Number(document.getElementById(fieldsToFix[x]).value)
-          for (let y = 0; y < temp.length; x++) {}
-        } */
+        //var string = numeral('$123,456.78').format('0.00')
+        //var string = numeral(123456789.12).format('$ 0,0[.]00')
+        //console.log(string)
+      }
+
+      function deFixNumbers() {
+        let fieldsToFix = [
+          'totalSalary',
+          'totalMortgage',
+          'totalCarLoan',
+          'totalBills',
+          'monthlyIncome',
+          'monthlyCarPay',
+          'monthlyMortgagePay',
+          'monthlyBills',
+        ]
+        for (let x = 0; x < fieldsToFix.length; x++) {
+          let temp = document.getElementById(fieldsToFix[x]).value
+          temp = numeral(temp).format('0.00')
+          document.getElementById(fieldsToFix[x]).value = temp
+          console.log(
+            'This is defixed ' +
+              fieldsToFix[x] +
+              ': ' +
+              document.getElementById(fieldsToFix[x]).value
+          )
+        }
       }
 
       // Fills everything onLoad
       window.onload = function whenOpen() {
         getInfoFromDatabase()
-      }
-
-      function testFunction() {
-        console.log('this is item1:' + item1)
-      }
-
-      function updatePieChart() {
-        let item1 = Number(document.getElementById('totalSalary').value)
-        let item2 = Number(document.getElementById('totalMortgage').value)
-        let item3 = Number(document.getElementById('totalCarLoan').value)
-        let item4 = Number(document.getElementById('totalBills').value)
-        let item5 = Number(document.getElementById('monthlyIncome').value)
-        let item6 = Number(document.getElementById('monthlyCarPay').value)
-        let item7 = Number(document.getElementById('monthlyMortgagePay').value)
-        let item8 = Number(document.getElementById('monthlyBills').value)
-
-        fixNumbers()
-
-        let leftOver = item5 - (item7 + item6 + item8)
-
-        if (leftOver <= 0) leftOver = 0
-
-        //myChart.data.labels.push("New Label");
-        myChart.data.datasets[0].data = [item7, item6, item8, leftOver]
-        myChart.update()
       }
 
       function getInfoFromDatabase() {
@@ -317,12 +328,14 @@
             document.getElementById('monthlyBills').value =
               results[0].monthlyBills
             //document.getElementById('monthlyIncome').value = results[0].monthlyIncome
+            fixNumbers()
           }
         )
         connection.end()
       }
 
       function upDateDatabase() {
+        deFixNumbers()
         // SQL stuff
         const electron = require('electron')
         const { ipcRenderer } = electron
@@ -372,6 +385,32 @@
           }
         )
         updatePieChart()
+        console.log('upDateDatabase')
+        fixNumbers()
+      }
+
+      function updatePieChart() {
+        console.log(
+          'Inside updatePieChart Number(123456.23): ' + Number(123456.23)
+        )
+
+        let item1 = Number(document.getElementById('totalSalary').value)
+        let item2 = Number(document.getElementById('totalMortgage').value)
+        let item3 = Number(document.getElementById('totalCarLoan').value)
+        let item4 = Number(document.getElementById('totalBills').value)
+        let item5 = Number(document.getElementById('monthlyIncome').value)
+        let item6 = Number(document.getElementById('monthlyCarPay').value)
+        let item7 = Number(document.getElementById('monthlyMortgagePay').value)
+        let item8 = Number(document.getElementById('monthlyBills').value)
+
+        let leftOver = item5 - (item7 + item6 + item8)
+
+        if (leftOver <= 0) leftOver = 0
+
+        //myChart.data.labels.push("New Label");
+        myChart.data.datasets[0].data = [item7, item6, item8, leftOver]
+        myChart.update()
+        console.log('udpatePieChart')
       }
     </script>
 
