@@ -49,6 +49,7 @@
               type="text"
               id="totalMortgage"
               name="totalMortgage"
+              onblur="upDateDatabase()"
             />
             <label class="active" for="totalMortgage">Total Mortgage</label>
           </div>
@@ -191,6 +192,7 @@
           carPayment = Number(results[0].monthlyCarPayment)
           bills = Number(results[0].monthlyBills)
           leftOver = monthlyIncome - (mortgagePayment + carPayment + bills)
+          if (leftOver <= 0) leftOver = 0
 
           const data = {
             labels: ['Mortgage', 'Car Loan', 'Bills', 'Left Over'],
@@ -230,8 +232,55 @@
 
       connection.end()
 
+      // Get numbers to look like currency
+      function fixNumbers() {
+        let fieldsToFix = ['totalSalary', 'totalMortgage', 'totalCarLoan']
+        let temp2 = fieldsToFix[0].slice(3)
+        console.log(temp2)
+
+        for (let x = 0; x < fieldsToFix.length; x++) {
+          let temp = Number(document.getElementById(fieldsToFix[x]).value)
+          //temp = '$' + temp.toFixed(2)
+          console.log('This is temp ' + (x + 1) + ': ' + temp)
+          console.log('This should be 5th character in temp: ' + temp[5])
+        }
+        /* for (let x = 0; x < fieldsToFix.length; x++) {
+          let temp = Number(document.getElementById(fieldsToFix[x]).value)
+          for (let y = 0; y < temp.length; x++) {}
+        } */
+      }
+
       // Fills everything onLoad
       window.onload = function whenOpen() {
+        getInfoFromDatabase()
+      }
+
+      function testFunction() {
+        console.log('this is item1:' + item1)
+      }
+
+      function updatePieChart() {
+        let item1 = Number(document.getElementById('totalSalary').value)
+        let item2 = Number(document.getElementById('totalMortgage').value)
+        let item3 = Number(document.getElementById('totalCarLoan').value)
+        let item4 = Number(document.getElementById('totalBills').value)
+        let item5 = Number(document.getElementById('monthlyIncome').value)
+        let item6 = Number(document.getElementById('monthlyCarPay').value)
+        let item7 = Number(document.getElementById('monthlyMortgagePay').value)
+        let item8 = Number(document.getElementById('monthlyBills').value)
+
+        fixNumbers()
+
+        let leftOver = item5 - (item7 + item6 + item8)
+
+        if (leftOver <= 0) leftOver = 0
+
+        //myChart.data.labels.push("New Label");
+        myChart.data.datasets[0].data = [item7, item6, item8, leftOver]
+        myChart.update()
+      }
+
+      function getInfoFromDatabase() {
         // SQL stuff
         const electron = require('electron')
         const { ipcRenderer } = electron
@@ -239,8 +288,6 @@
 
         //auto-populate the info
         var mysql = require('mysql')
-
-        console.log('test')
 
         var connection = mysql.createConnection({
           host: '127.0.0.1',
@@ -273,10 +320,6 @@
           }
         )
         connection.end()
-      }
-
-      function testFunction() {
-        console.log('this is item1:' + item1)
       }
 
       function upDateDatabase() {
@@ -326,38 +369,9 @@
             '";',
           function (error, results, fields) {
             if (error) throw error
-            console.log(results)
-            document.getElementById('totalSalary').value = results[0].salary
-            document.getElementById('totalMortgage').value =
-              results[0].totalMortgages
-            document.getElementById('totalCarLoan').value =
-              results[0].totalCarLoans
-            document.getElementById('totalBills').value = results[0].totalBills
-            //document.getElementById('item').value = results[0].salary
           }
         )
-        updateConfigAsNewObject(myChart)
-      }
-
-      function updateConfigAsNewObject(chart) {
-        chart.options = {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Chart.js',
-            },
-          },
-          scales: {
-            x: {
-              display: true,
-            },
-            y: {
-              display: true,
-            },
-          },
-        }
-        chart.update()
+        updatePieChart()
       }
     </script>
 
