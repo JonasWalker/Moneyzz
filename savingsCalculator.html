@@ -24,20 +24,70 @@
 
     <ul></ul>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <div>
-      <canvas id="myChart"></canvas>
+    <div class="row">
+      <canvas
+        id="myChart"
+      ></canvas>
+      </div class="row">
+    <div class="row" style="margin-top: -20%">
+        <div class="col s6 offset-s5">
+      <a onclick="addData(myChart)" class="waves-effect waves-light btn"
+        >Add a Month</a
+      >
+      <a onclick="deleteData(myChart)" class="waves-effect waves-light btn"
+        >Delete a Month</a
+      >
+      </div>
     </div>
-    <a onclick="addData(myChart)" class="waves-effect waves-light btn"
-      >Add a Month</a
-    >
-    <a onclick="deleteData(myChart)" class="waves-effect waves-light btn"
-      >Delete a Month</a
-    >
     <script>
+      // SQL stuff
+      const electron = require('electron')
+      const { ipcRenderer } = electron
+      const ul = document.querySelector('ul')
+
+      //auto-populate the info
+      var mysql = require('mysql')
+
+      var monthlyLeftOver = 0
+      var totalSavings = 0
+
+      var connection = mysql.createConnection({
+        host: '127.0.0.1',
+        user: 'JonasWalker',
+        password: 'jonas1999',
+        database: 'Moneyz',
+      })
+
+      connection.connect()
+
+      connection.query(
+        'SELECT * FROM moneyz.accountinfo;',
+        function (error, results, fields) {
+          if (error) throw error
+          /*document.getElementById('totalSalary').value = results[0].salary
+            document.getElementById('totalMortgage').value =
+              results[0].totalMortgages
+            document.getElementById('totalCarLoan').value =
+              results[0].totalCarLoans
+            document.getElementById('totalBills').value = results[0].totalBills
+            document.getElementById('monthlyIncome').value =
+              results[0].monthlyIncome
+            document.getElementById('monthlyCarPay').value =
+              results[0].monthlyCarPayment
+            document.getElementById('monthlyMortgagePay').value =
+              results[0].monthlyMortgagePayment
+            document.getElementById('monthlyBills').value =
+              results[0].monthlyBill s
+            //document.getElementById('monthlyIncome').value = results[0].monthlyIncome*/
+          monthlyLeftOver = Number(results[0].monthlyLeftOver)
+          console.log(monthlyLeftOver)
+        }
+      )
+      connection.end()
+
       //currMonth = date.getMonth();
 
-      var monthly = 100
-      var totalAmount = monthly
+      var totalSavings = monthlyLeftOver
       var date = new Date()
       /*const months = [
         'January',
@@ -74,10 +124,10 @@
         labels: labels,
         datasets: [
           {
-            label: 'My First dataset',
+            label: 'Montly Savings',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
-            data: [monthly],
+            data: [monthlyLeftOver],
           },
         ],
       }
@@ -91,8 +141,8 @@
             padding: {
               left: 100,
               right: 100,
-              top: 100,
-              bottom: 300,
+              top: 50,
+              bottom: 500,
             },
           },
         },
@@ -103,25 +153,28 @@
 
       function addData(myChart) {
         const data = myChart.data
-        console.log(data.labels)
-        console.log(data.labels.length)
-        console.log('currMonth in addData: ' + currMonth)
+ 
         if (data.datasets.length > 0) {
           data.labels = month({ count: data.labels.length + 1 })
           for (var index = 0; index < data.datasets.length; ++index) {
-            totalAmount = totalAmount + monthly
-            data.datasets[index].data.push(totalAmount)
+            totalSavings = totalSavings + monthlyLeftOver
+            data.datasets[index].data.push(totalSavings)
           }
           myChart.update()
         }
       }
 
       function deleteData(myChart) {
+          if (totalSavings <= 0) {
+          totalSavings = 0
+          return
+        } 
         myChart.data.labels.splice(-1, 1) // remove the label first
 
         myChart.data.datasets.forEach((dataset) => {
           dataset.data.pop()
         })
+        totalSavings = totalSavings - monthlyLeftOver
 
         myChart.update()
       }

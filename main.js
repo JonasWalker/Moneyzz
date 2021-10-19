@@ -3,6 +3,7 @@ const url = require('url')
 const path = require('path')
 
 var mysql = require('mysql')
+const { MenuItem } = require('electron/main')
 // for hot reload
 try {
   require('electron-reloader')(module)
@@ -70,14 +71,17 @@ function createAddWindow(_xwindow, _title) {
   // Create new window
   _xwindow = _xwindow + '.html'
   addWindow = new BrowserWindow({
-    width: 300,
-    height: 200,
+    width: 1920,
+    height: 1080,
     title: _title,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   })
+  // build menu from template
+  //const addWindow = Menu.buildFromTemplate(savingsCalTemplate)
+  //Menu.setApplicationMenu(addWindow)
 
   // Load html into Window
   addWindow.loadURL(
@@ -93,6 +97,10 @@ function createAddWindow(_xwindow, _title) {
   addWindow.on('close', function () {
     addWindow = null
   })
+  //does work for some reason
+  // build menu from template
+  //const addMenu = Menu.buildFromTemplate(savingsCalTemplate)
+  //Menu.setApplicationMenu(addMenu)
 }
 
 // Catch item:add
@@ -105,63 +113,43 @@ ipcMain.on('item:add', function (e, item) {
 // Create menu template
 const mainMenuTemplate = [
   {
-    label: 'Add',
+    label: 'Menu',
     submenu: [
       {
-        label: 'Add Income',
+        label: 'Calculate Savings',
         click() {
-          createAddWindow('addIncome', 'Add a New Income')
+          createAddWindow('savingsCalculator', 'Savings Calculator')
         },
       },
       {
-        label: 'Add Mortgage',
-      },
-      {
-        label: 'Add Bill',
-        click() {
-          mainWindow.webContents.send('item:clear')
-        },
-      },
-      /*{
         label: 'Quit',
         // this is a short cut to close app. checks if mac or windows
         accelerator: process.plateform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
         click() {
           app.quit()
         },
-      },*/
+      },
     ],
-    /*label: 'Clear',
-    submenu: [
-      {
-        label: 'Clear Income',
-        click() {
-          createAddWindow()
-        },
-      },
-      {
-        label: 'Clear Bill',
-        click() {
-          mainWindow.webContents.send('item:clear')
-        },
-      },
-      // {
-      //   label: 'Quit',
-      //   // this is a short cut to close app. checks if mac or windows
-      //   accelerator: process.plateform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
-      //   click() {
-      //     app.quit()
-      //   },
-      // },
-    ],*/
   },
 ]
+// Create Savings Calculator Template
+const savingsCalTemplate = {
+  label: 'Menu',
+  submenu: [
+    {
+      label: 'Exit',
+      click() {
+        window.close()
+      },
+    },
+  ],
+}
 
-mainMenuTemplate.push({
+/* mainMenuTemplate.push({
   label: 'Clear',
   submenu: [
     {
-      label: 'Clear Income',
+      label: 'Calculate Savings',
       click() {
         //createAddWindow()
       },
@@ -184,7 +172,7 @@ mainMenuTemplate.push({
     //   },
     // },
   ],
-})
+}) */
 
 // If mac, add empty object to menu
 if (process.plateform == 'darwin') {
