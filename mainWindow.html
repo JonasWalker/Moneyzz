@@ -210,7 +210,7 @@
           }
 
           const config = {
-            type: 'pie',
+            type: 'doughnut',
             data: data,
             options: {
               layout: {
@@ -357,6 +357,7 @@
         item6 = document.getElementById('monthlyCarPay').value
         item7 = document.getElementById('monthlyMortgagePay').value
         item8 = document.getElementById('monthlyBills').value
+        item9 = leftOver
 
         connection.query(
           'UPDATE accountinfo SET salary ="' +
@@ -375,6 +376,8 @@
             item7 +
             '", monthlyBills = "' +
             item8 +
+            '", monthlyLeftOver = "' +
+            item9 +
             '";',
           function (error, results, fields) {
             if (error) throw error
