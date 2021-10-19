@@ -228,7 +228,7 @@
       )
 
       connection.end()
-
+      // 46000.00 => $ 46,000
       // Get numbers to look like currency
       function fixNumbers() {
         let fieldsToFix = [
@@ -257,7 +257,7 @@
         //var string = numeral(123456789.12).format('$ 0,0[.]00')
         //console.log(string)
       }
-
+      // $ 46,000 => 46000.00
       function deFixNumbers() {
         let fieldsToFix = [
           'totalSalary',
