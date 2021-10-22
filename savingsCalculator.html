@@ -64,21 +64,6 @@
         'SELECT * FROM moneyz.accountinfo;',
         function (error, results, fields) {
           if (error) throw error
-          /*document.getElementById('totalSalary').value = results[0].salary
-            document.getElementById('totalMortgage').value =
-              results[0].totalMortgages
-            document.getElementById('totalCarLoan').value =
-              results[0].totalCarLoans
-            document.getElementById('totalBills').value = results[0].totalBills
-            document.getElementById('monthlyIncome').value =
-              results[0].monthlyIncome
-            document.getElementById('monthlyCarPay').value =
-              results[0].monthlyCarPayment
-            document.getElementById('monthlyMortgagePay').value =
-              results[0].monthlyMortgagePayment
-            document.getElementById('monthlyBills').value =
-              results[0].monthlyBill s
-            //document.getElementById('monthlyIncome').value = results[0].monthlyIncome*/
           monthlyLeftOver = Number(results[0].monthlyLeftOver)
           console.log("This is inside the query: " + monthlyLeftOver)
         }
@@ -125,8 +110,8 @@
         datasets: [
           {
             label: 'Montly Savings',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgb(50, 168, 82)', //green
+            borderColor: 'rgb(50, 168, 82)', //green
             data: [monthlyLeftOver],
           },
         ],

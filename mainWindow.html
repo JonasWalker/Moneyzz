@@ -33,12 +33,7 @@
       <form class="col s24">
         <div class="row">
           <div class="input-field col s3">
-            <input
-              placeholder="Enter Salary"
-              id="totalSalary"
-              type="text"
-              onblur="upDateDatabase()"
-            />
+            <input placeholder="Enter Salary" id="totalSalary" type="text" />
             <label class="active" for="totalSalary">Total Salary</label>
           </div>
           <div class="input-field col s3">
@@ -47,7 +42,6 @@
               type="text"
               id="totalMortgage"
               name="totalMortgage"
-              onblur="upDateDatabase()"
             />
             <label class="active" for="totalMortgage">Total Mortgage</label>
           </div>
@@ -57,7 +51,6 @@
               type="text"
               id="totalCarLoan"
               name="totalCarLoan"
-              onblur="upDateDatabase()"
             />
             <label class="active" for="totalCarLoan">Total Car Loan</label>
           </div>
@@ -67,7 +60,6 @@
               type="text"
               id="totalBills"
               name="totalBills"
-              onblur="upDateDatabase()"
             />
             <label class="active" for="totalBills">Total Bills</label>
           </div>
@@ -349,6 +341,9 @@
 
         connection.connect()
 
+        leftOver = monthlyIncome - (mortgagePayment + carPayment + bills)
+        if (leftOver <= 0) leftOver = 0
+
         item1 = document.getElementById('totalSalary').value
         item2 = document.getElementById('totalMortgage').value
         item3 = document.getElementById('totalCarLoan').value
@@ -392,7 +387,6 @@
         console.log(
           'Inside updatePieChart Number(123456.23): ' + Number(123456.23)
         )
-
         let item1 = Number(document.getElementById('totalSalary').value)
         let item2 = Number(document.getElementById('totalMortgage').value)
         let item3 = Number(document.getElementById('totalCarLoan').value)
